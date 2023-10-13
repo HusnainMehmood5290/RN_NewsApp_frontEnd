@@ -6,6 +6,7 @@ import yupUpdatePass from "../constraints/yupUpdatePass";
 import axios from "axios";
 import { useState } from "react";
 import { Formik } from "formik";
+import ErrorText from "../components/errorText";
 
 const UpdatePass = (props) => {
   const email = props.route.params.email;
@@ -36,15 +37,13 @@ const UpdatePass = (props) => {
             value={values.pass}
             onChangeText={handleChange("pass")}
           />
-          {errors.pass && <Text style={{ color: "red" }}>{errors.pass}</Text>}
+          {errors.pass && <ErrorText msg={errors.pass} />}
           <UserInput
             placeholder="Confirm Password"
             value={values.confirmPass}
             onChangeText={handleChange("confirmPass")}
           />
-          {errors.confirmPass && (
-            <Text style={{ color: "red" }}>{errors.confirmPass}</Text>
-          )}
+          {errors.confirmPass && <ErrorText msg={errors.confirmPass} />}
           {isLoading ? (
             <ActivityIndicator size={"large"} />
           ) : (

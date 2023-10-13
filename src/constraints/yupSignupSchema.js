@@ -3,12 +3,14 @@ const SignupSchema = Yup.object().shape({
   fname: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
-    .required("Required"),
+    .required("first name is required")
+    .trim("Spaces will not count"),
   lname: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
-    .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-  pass: Yup.string().min(8).required("Required"),
+    .required("Last name is required")
+    .trim("Spaces will not count"),
+  email: Yup.string().email("Invalid email").required("email is required"),
+  pass: Yup.string().min(8).required("password is required"),
 });
 export default SignupSchema;

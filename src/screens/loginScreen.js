@@ -7,6 +7,7 @@ import styles from "../constraints/styleSheet";
 import { Formik } from "formik";
 import yupLoginSchema from "../constraints/yupLoginSchema";
 import axios from "axios";
+import ErrorText from "../components/errorText";
 
 export default LoginScreen = (props) => {
   const [isLoading, setIsLoadinng] = useState(false);
@@ -32,25 +33,30 @@ export default LoginScreen = (props) => {
       {({ handleChange, handleSubmit, errors, values }) => (
         <View style={styles.container}>
           <Heading value="Login" />
-          {emailError && (
-            <Text style={{ color: "red" }}>
-              Email or Password is incorrect try again or signup
-            </Text>
-          )}
+
           <UserInput
             placeholder="Enter Email"
             onChangeText={handleChange("email")}
             value={values.email}
           />
-          {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
+
+          {errors.email && <ErrorText msg={errors.email} />}
           <UserInput
             placeholder="Enter Password"
             onChangeText={handleChange("pass")}
             value={values.pass}
           />
-          {errors.pass && <Text style={{ color: "red" }}>{errors.pass}</Text>}
-
+          {errors.pass && <ErrorText msg={errors.pass} />}
+          {emailError && (
+            <ErrorText msg="Email or Password is incorrect try again or signup" />
+          )}
+          {isLoading ? (
+            <ActivityIndicator size={"large"} />
+          ) : (
+            <Button title="Login" onPress={handleSubmit} />
+          )}
           <TouchableOpacity
+            style={{ width: "100%", alignItems: "flex-end", marginTop: 7 }}
             onPress={() => {
               props.navigation.navigate("Forget Password");
             }}
@@ -65,11 +71,6 @@ export default LoginScreen = (props) => {
               Forget Password?
             </Text>
           </TouchableOpacity>
-          {isLoading ? (
-            <ActivityIndicator size={"large"} />
-          ) : (
-            <Button title="Login" onPress={handleSubmit} />
-          )}
         </View>
       )}
     </Formik>

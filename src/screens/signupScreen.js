@@ -7,6 +7,7 @@ import styles from "../constraints/styleSheet";
 import yupSignupSchema from "../constraints/yupSignupSchema";
 import { Formik } from "formik";
 import axios from "axios";
+import ErrorText from "../components/errorText";
 
 export default SignupScreen = (props) => {
   const [isLoading, setIsLoadinng] = useState(false);
@@ -43,25 +44,25 @@ export default SignupScreen = (props) => {
             value={values.fname}
             onChangeText={handleChange("fname")}
           />
-          {errors.fname && <Text style={{ color: "red" }}>{errors.fname}</Text>}
+          {errors.fname && <ErrorText msg={errors.fname} />}
           <UserInput
             placeholder="Enter Last name"
             value={values.lname}
             onChangeText={handleChange("lname")}
           />
-          {errors.lname && <Text style={{ color: "red" }}>{errors.lname}</Text>}
+          {errors.lname && <ErrorText msg={errors.lname} />}
           <UserInput
             placeholder="Enter Email"
             value={values.email}
             onChangeText={handleChange("email")}
           />
-          {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
+          {errors.email && <ErrorText msg={errors.email} />}
           <UserInput
             placeholder="Enter Password"
             value={values.pass}
             onChangeText={handleChange("pass")}
           />
-          {errors.pass && <Text style={{ color: "red" }}>{errors.pass}</Text>}
+          {errors.pass && <ErrorText msg={errors.pass} />}
           {isLoading ? (
             <ActivityIndicator size={"large"} />
           ) : (
