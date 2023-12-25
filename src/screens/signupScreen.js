@@ -6,23 +6,23 @@ import UserInput from "../components/userInput";
 import styles from "../constraints/styleSheet";
 import yupSignupSchema from "../constraints/yupSignupSchema";
 import { Formik } from "formik";
-import axios from "axios";
 import ErrorText from "../components/errorText";
-
+import Spinner from "../components/spinner";
+import AuthService from "../services/authService";
 export default SignupScreen = (props) => {
   const [isLoading, setIsLoadinng] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
   const SignUp = async (values) => {
     setIsLoadinng(true);
-    const result = await axios.post("http://192.168.0.116:3000/signup", values);
+    const result = await AuthService.signUpHandler(values);
     setIsLoadinng(false);
-    if (result.data == "new") {
+    if (result == "new") {
       props.navigation.navigate("Login");
-    } else if (result.data == "exist") {
+    } else if (result == "exist") {
       setEmailError(true);
     }
-    console.log(result.data);
+    console.log(result);
   };
 
   return (
@@ -63,11 +63,12 @@ export default SignupScreen = (props) => {
             onChangeText={handleChange("pass")}
           />
           {errors.pass && <ErrorText msg={errors.pass} />}
-          {isLoading ? (
-            <ActivityIndicator size={"large"} />
-          ) : (
-            <Button title="Sign Up" onPress={handleSubmit} />
-          )}
+          <Spinner
+            title="Sign Up"
+            onPress={handleSubmit}
+            isLoading={isLoading}
+          />
+
           <Text style={{ padding: 8 }}>Already Have an account?</Text>
           <Button
             title="Login"

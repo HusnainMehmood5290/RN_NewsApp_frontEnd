@@ -1,12 +1,12 @@
 import { View, Text, ActivityIndicator } from "react-native";
 import UserInput from "../components/userInput";
 import styles from "../constraints/styleSheet";
-import Button from "../components/button";
 import yupUpdatePass from "../constraints/yupUpdatePass";
-import axios from "axios";
 import { useState } from "react";
 import { Formik } from "formik";
 import ErrorText from "../components/errorText";
+import AuthService from "../services/authService";
+import SpinnerButton from "../components/spinner";
 
 const UpdatePass = (props) => {
   const email = props.route.params.email;
@@ -18,9 +18,9 @@ const UpdatePass = (props) => {
       email: email,
       pass: values.pass,
     };
-    const result = await axios.post("http://192.168.0.116:3000/update", user);
+    const result = await AuthService.update(user);
     setIsLoadinng(false);
-    if (result.data == "done") {
+    if (result == "done") {
       props.navigation.navigate("Login");
     }
   };
@@ -44,11 +44,11 @@ const UpdatePass = (props) => {
             onChangeText={handleChange("confirmPass")}
           />
           {errors.confirmPass && <ErrorText msg={errors.confirmPass} />}
-          {isLoading ? (
-            <ActivityIndicator size={"large"} />
-          ) : (
-            <Button title="submit" onPress={handleSubmit} />
-          )}
+          <SpinnerButton
+            isLoading={isLoading}
+            title="submit"
+            onPress={handleSubmit}
+          />
         </View>
       )}
     </Formik>

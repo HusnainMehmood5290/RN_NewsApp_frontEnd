@@ -1,9 +1,9 @@
 import { View, ActivityIndicator, Text } from "react-native";
 import UserInput from "../components/userInput";
 import styles from "../constraints/styleSheet";
-import Button from "../components/button";
 import { useState } from "react";
-import axios from "axios";
+import AuthService from "../services/authService";
+import SpinnerButton from "../components/spinner";
 
 const ForgetPass = (props) => {
   const [isLoading, setIsLoadinng] = useState(false);
@@ -12,16 +12,14 @@ const ForgetPass = (props) => {
   const checkEmail = async () => {
     setIsLoadinng(true);
     // console.log(email);
-    const result = await axios.post("http://192.168.0.116:3000/findEmail", {
-      email: email,
-    });
-    // console.log(result.data);
+    const result = await AuthService.findMail(email);
+    // console.log(result);
     // console.log(email);
     setIsLoadinng(false);
-    if (result.data == "valid") {
+    if (result == "valid") {
       setEmailError(false);
       props.navigation.navigate("Update Password", { email: email });
-    } else if (result.data == "inValid") {
+    } else if (result == "inValid") {
       setEmailError(true);
     }
   };
@@ -37,11 +35,11 @@ const ForgetPass = (props) => {
           Email doesn't exist
         </Text>
       )}
-      {isLoading ? (
-        <ActivityIndicator size={"large"} />
-      ) : (
-        <Button title="submit" onPress={checkEmail} />
-      )}
+      <SpinnerButton
+        title="submit"
+        onPress={checkEmail}
+        isLoading={isLoading}
+      />
     </View>
   );
 };

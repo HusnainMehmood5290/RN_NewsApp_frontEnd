@@ -7,6 +7,7 @@ import LoginScreen from "../screens/loginScreen";
 import Dashboard from "../screens/dashboardScreen";
 import ForgetPass from "../screens/forgetPassScreen";
 import UpdatePass from "../screens/updatePassSreen";
+import newsScreen from "../screens/newsScreen";
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -17,6 +18,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Forget Password" component={ForgetPass} />
       <Stack.Screen name="Update Password" component={UpdatePass} />
+      <Stack.Screen name="News Screen" component={newsScreen} />
     </Stack.Navigator>
   );
 };

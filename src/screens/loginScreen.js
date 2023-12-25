@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Heading from "../components/heading";
-import Button from "../components/button";
 import UserInput from "../components/userInput";
-import styles from "../constraints/styleSheet";
-import { Formik } from "formik";
-import yupLoginSchema from "../constraints/yupLoginSchema";
-import axios from "axios";
+import SpinnerButton from "../components/spinner";
 import ErrorText from "../components/errorText";
-
+import styles from "../constraints/styleSheet";
+import yupLoginSchema from "../constraints/yupLoginSchema";
+import AuthService from "../services/authService";
+import { Formik } from "formik";
 export default LoginScreen = (props) => {
   const [isLoading, setIsLoadinng] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
   const Login = async (values) => {
     setIsLoadinng(true);
-    const result = await axios.post("http://192.168.0.116:3000/login", values);
+    const result = await AuthService.loginHandler(values);
+    // console.log(result);
     setIsLoadinng(false);
-    if (result.data == false) {
+    if (result == false) {
       setEmailError(true);
     } else {
       setEmailError(false);
-      props.navigation.navigate("Dashboard", { data: result.data });
+      props.navigation.navigate("Dashboard", { data: result.result });
     }
   };
   return (
@@ -50,11 +50,11 @@ export default LoginScreen = (props) => {
           {emailError && (
             <ErrorText msg="Email or Password is incorrect try again or signup" />
           )}
-          {isLoading ? (
-            <ActivityIndicator size={"large"} />
-          ) : (
-            <Button title="Login" onPress={handleSubmit} />
-          )}
+          <SpinnerButton
+            title="Login"
+            onPress={handleSubmit}
+            isLoading={isLoading}
+          />
           <TouchableOpacity
             style={{ width: "100%", alignItems: "flex-end", marginTop: 7 }}
             onPress={() => {
